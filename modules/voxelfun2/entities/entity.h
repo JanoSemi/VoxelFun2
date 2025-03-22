@@ -25,6 +25,9 @@ public:
 	void set_collision_mask(uint32_t cm);
 	uint32_t get_collision_mask() const;
 
+	void set_step_height(float sh);
+	float get_step_height() const;
+
 	void set_terrain_path(NodePath tp);
 	NodePath get_terrain_path() const;
 
@@ -34,6 +37,7 @@ protected:
 
 	AABB hitbox;
 	uint32_t collision_mask = 0xffffffff;
+	float step_height = 0.5;
 	NodePath terrain_path;
 	VoxelTerrain *terrain;
 	Ref<VoxelTool> tool;

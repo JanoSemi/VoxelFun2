@@ -46,6 +46,14 @@ uint32_t Entity::get_collision_mask() const {
 	return collision_mask;
 }
 
+void Entity::set_step_height(float sh) {
+	step_height = sh;
+	// TODO Backport stepping code
+};
+float Entity::get_step_height() const {
+	return step_height;
+};
+
 void Entity::set_terrain_path(NodePath tp) {
 	terrain_path = tp;
 	if (!has_node(terrain_path)) {
@@ -66,6 +74,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_hitbox"), &Entity::get_hitbox);
 	ClassDB::bind_method(D_METHOD("set_collision_mask", "cm"), &Entity::set_collision_mask);
 	ClassDB::bind_method(D_METHOD("get_collision_mask"), &Entity::get_collision_mask);
+	ClassDB::bind_method(D_METHOD("set_step_height", "sh"), &Entity::set_step_height);
+	ClassDB::bind_method(D_METHOD("get_step_height"), &Entity::get_step_height);
 	ClassDB::bind_method(D_METHOD("set_terrain"), &Entity::set_terrain_path);
 	ClassDB::bind_method(D_METHOD("get_terrain"), &Entity::get_terrain_path);
 
