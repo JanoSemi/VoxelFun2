@@ -13,10 +13,6 @@ Player::~Player() {
 }
 
 void Player::_physics_process(float delta) {
-	if (engine->is_editor_hint()) {
-		return;
-	}
-
 	Transform t = get_transform();
 	if (tool.is_valid()) {
 		grounded = tool->raycast(t.origin - Vector3(0.0f, 0.9f, 0.0f), Vector3(0.0f, -1.0f, 0.0f), 0.1f, 1).is_valid();
@@ -34,10 +30,7 @@ void Player::_physics_process(float delta) {
 	// Gravity
 	velocity.y -= gravity * delta;
 	// Apply
-	velocity = terrain_collision.get_motion(get_translation(), velocity * delta, hitbox, terrain);
-	t.origin += velocity;
-	set_transform(t);
-	velocity = velocity / delta;
+	velocity = move_and_collide(velocity);
 }
 
 void Player::_input(const Ref<InputEvent> &p_event) {
@@ -68,13 +61,7 @@ void Player::_notification(int p_what) {
 	Entity::_notification(p_what);
 	switch (p_what) {
 		case NOTIFICATION_READY:
-			// In case path is set before the player entered the tree (aka via the Inspector)
-			if (has_node(camera_path)) {
-				Camera *c = Object::cast_to<Camera>(get_node(camera_path));
-				if (c) {
-					camera = c;
-				}
-			}
+			set_camera_path(camera_path);
 			break;
 	}
 }
@@ -82,6 +69,34 @@ void Player::_notification(int p_what) {
 Ref<VoxelRaycastResult> Player::get_pointed_result() {
 	return tool->raycast(camera->get_global_transform().origin, -camera->get_global_transform().basis.get_axis(Vector3::AXIS_Z), 10.0, 1);
 }
+
+// Setter/Getter
+void Player::set_speed(float s) { speed = s; };
+float Player::get_speed() const { return speed; };
+
+void Player::set_jump_power(float p) { jump_power = p; };
+float Player::get_jump_power() const { return jump_power; };
+
+void Player::set_gravity(float g) { gravity = g; };
+float Player::get_gravity() const { return gravity; };
+
+void Player::set_horizontal_sensitivity(float hs) { horizontal_sensitivity = hs / -100; };
+float Player::get_horizontal_sensitivity() const { return horizontal_sensitivity * -100; };
+
+void Player::set_vertical_sensitivity(float vs) { vertical_sensitivity = vs / -100; };
+float Player::get_vertical_sensitivity() const { return vertical_sensitivity * -100; };
+
+void Player::set_camera_path(const NodePath cp) {
+	camera_path = cp;
+	if (!has_node(camera_path)) {
+		return;
+	}
+	Camera *c = Object::cast_to<Camera>(get_node(camera_path));
+	if (c) {
+		camera = c;
+	}
+}
+NodePath Player::get_camera_path() const { return camera_path; }
 
 void Player::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_speed", "s"), &Player::set_speed);
@@ -94,8 +109,8 @@ void Player::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_horizontal_sensitivity"), &Player::get_horizontal_sensitivity);
 	ClassDB::bind_method(D_METHOD("set_vertical_sensitivity", "vs"), &Player::set_vertical_sensitivity);
 	ClassDB::bind_method(D_METHOD("get_vertical_sensitivity"), &Player::get_vertical_sensitivity);
-	ClassDB::bind_method(D_METHOD("set_camera_path"), &Player::set_camera_path);
-	ClassDB::bind_method(D_METHOD("get_camera_path"), &Player::get_camera_path);
+	ClassDB::bind_method(D_METHOD("set_camera"), &Player::set_camera_path);
+	ClassDB::bind_method(D_METHOD("get_camera"), &Player::get_camera_path);
 	ClassDB::bind_method(D_METHOD("_input"), &Player::_input);
 
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "speed"), "set_speed", "get_speed");
@@ -105,5 +120,5 @@ void Player::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "sensitivity_horizontal"), "set_horizontal_sensitivity", "get_horizontal_sensitivity");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "sensitivity_vertical"), "set_vertical_sensitivity", "get_vertical_sensitivity");
 	ADD_GROUP("Nodes", "node_");
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "node_camera", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Camera"), "set_camera_path", "get_camera_path");
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "node_camera", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "Camera"), "set_camera", "get_camera");
 }

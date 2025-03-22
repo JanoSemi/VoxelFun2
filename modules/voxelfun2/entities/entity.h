@@ -1,6 +1,8 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "core/engine.h"
+#include "core/math/vector3.h"
 #include "core/node_path.h"
 #include "modules/voxel/edition/voxel_tool_terrain.h"
 #include "modules/voxel/terrain/voxel_box_mover.h"
@@ -12,33 +14,27 @@ class Entity : public Spatial {
 public:
 	Entity();
 	~Entity();
+
 	virtual void _physics_process(float delta);
 
-	void set_hitbox(AABB hb) { hitbox = hb; }
-	AABB get_hitbox() const { return hitbox; }
+	Vector3 move_and_collide(Vector3 velocity);
 
-	void set_terrain_path(const NodePath p) {
-		terrain_path = p;
-		if (!has_node(p)) {
-			return;
-		}
-		VoxelTerrain *t = Object::cast_to<VoxelTerrain>(get_node(p));
-		if (t) {
-			terrain = t;
-			tool = terrain->get_voxel_tool();
-		}
-	}
-	NodePath get_terrain_path() const { return terrain_path; }
+	void set_hitbox(AABB hb);
+	AABB get_hitbox() const;
+
+	void set_terrain_path(NodePath tp);
+	NodePath get_terrain_path() const;
 
 protected:
 	virtual void _notification(int p_what);
 	static void _bind_methods();
 
 	AABB hitbox;
-	VoxelTerrain *terrain;
 	NodePath terrain_path;
+	VoxelTerrain *terrain;
 	Ref<VoxelTool> tool;
 	VoxelBoxMover terrain_collision;
+	Engine *engine = Engine::get_singleton();
 };
 
-#endif
+#endif // ENTITY_H
