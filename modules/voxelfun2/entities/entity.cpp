@@ -38,6 +38,14 @@ AABB Entity::get_hitbox() const {
 	return hitbox;
 }
 
+void Entity::set_collision_mask(uint32_t cm) {
+	collision_mask = cm;
+	terrain_collision.set_collision_mask(collision_mask);
+}
+uint32_t Entity::get_collision_mask() const {
+	return collision_mask;
+}
+
 void Entity::set_terrain_path(NodePath tp) {
 	terrain_path = tp;
 	if (!has_node(terrain_path)) {
@@ -56,11 +64,14 @@ NodePath Entity::get_terrain_path() const {
 void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_hitbox", "hb"), &Entity::set_hitbox);
 	ClassDB::bind_method(D_METHOD("get_hitbox"), &Entity::get_hitbox);
+	ClassDB::bind_method(D_METHOD("set_collision_mask", "cm"), &Entity::set_collision_mask);
+	ClassDB::bind_method(D_METHOD("get_collision_mask"), &Entity::get_collision_mask);
 	ClassDB::bind_method(D_METHOD("set_terrain"), &Entity::set_terrain_path);
 	ClassDB::bind_method(D_METHOD("get_terrain"), &Entity::get_terrain_path);
 
 	ADD_GROUP("Collision", "collision_");
 	ADD_PROPERTY(PropertyInfo(Variant::AABB, "collision_hitbox"), "set_hitbox", "get_hitbox");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_mask", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_mask", "get_collision_mask");
 	ADD_GROUP("Nodes", "node_");
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "node_terrain", PROPERTY_HINT_NODE_PATH_VALID_TYPES, "VoxelTerrain"), "set_terrain", "get_terrain");
 }

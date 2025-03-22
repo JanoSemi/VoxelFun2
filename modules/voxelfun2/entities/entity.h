@@ -22,6 +22,9 @@ public:
 	void set_hitbox(AABB hb);
 	AABB get_hitbox() const;
 
+	void set_collision_mask(uint32_t cm);
+	uint32_t get_collision_mask() const;
+
 	void set_terrain_path(NodePath tp);
 	NodePath get_terrain_path() const;
 
@@ -30,6 +33,7 @@ protected:
 	static void _bind_methods();
 
 	AABB hitbox;
+	uint32_t collision_mask = 0xffffffff;
 	NodePath terrain_path;
 	VoxelTerrain *terrain;
 	Ref<VoxelTool> tool;
