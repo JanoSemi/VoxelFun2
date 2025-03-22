@@ -65,7 +65,9 @@ requires_collisions = false
 [node name="MeshInstance" type="MeshInstance" parent="Player"]
 mesh = SubResource( 45 )
 
-[node name="Crosshair" type="ColorRect" parent="."]
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Crosshair" type="ColorRect" parent="HUD"]
 material = SubResource( 50 )
 anchor_left = 0.5
 anchor_top = 0.5
