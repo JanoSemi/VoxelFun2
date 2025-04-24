@@ -15,8 +15,6 @@ public:
 	Entity();
 	~Entity();
 
-	virtual void _physics_process(float delta);
-
 	Vector3 move_and_collide(Vector3 velocity);
 
 	void set_hitbox(AABB hb);
@@ -32,7 +30,10 @@ public:
 	NodePath get_terrain_path() const;
 
 protected:
+	virtual void _physics_process(float delta);
+
 	virtual void _notification(int p_what);
+
 	static void _bind_methods();
 
 	AABB hitbox;

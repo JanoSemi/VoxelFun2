@@ -6,6 +6,18 @@ Entity::Entity() {
 Entity::~Entity() {
 }
 
+Vector3 Entity::move_and_collide(Vector3 velocity) {
+	float delta = get_physics_process_delta_time();
+	Vector3 origin = get_translation();
+	Vector3 fd_velocity = velocity * delta;
+	fd_velocity = terrain_collision.get_motion(origin, fd_velocity, hitbox, terrain);
+	origin += fd_velocity;
+	set_translation(origin);
+	return fd_velocity / delta;
+}
+
+void Entity::_physics_process(float delta) {}
+
 void Entity::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_READY:
@@ -17,18 +29,6 @@ void Entity::_notification(int p_what) {
 			}
 			break;
 	}
-}
-
-void Entity::_physics_process(float delta) {}
-
-Vector3 Entity::move_and_collide(Vector3 velocity) {
-	float delta = get_physics_process_delta_time();
-	Vector3 origin = get_translation();
-	Vector3 fd_velocity = velocity * delta;
-	fd_velocity = terrain_collision.get_motion(origin, fd_velocity, hitbox, terrain);
-	origin += fd_velocity;
-	set_translation(origin);
-	return fd_velocity / delta;
 }
 
 void Entity::set_hitbox(AABB hb) {

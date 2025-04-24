@@ -1,11 +1,11 @@
 #include "player.h"
 
 Player::Player() {
-	set_physics_process(true);
-	set_process_input(true);
 	if (engine->is_editor_hint()) {
 		return;
 	}
+	set_physics_process(true);
+	set_process_input(true);
 	input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED);
 }
 
