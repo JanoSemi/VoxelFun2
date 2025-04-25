@@ -47,11 +47,11 @@ public:
 	Input *input = Input::get_singleton();
 
 protected:
-	void _physics_process(float delta) override;
+	virtual void _physics_process(float delta) override;
 
 	void _input(const Ref<InputEvent> &p_event);
 
-	void _notification(int p_what) override;
+	void _notification(int p_what);
 
 	static void _bind_methods();
 };

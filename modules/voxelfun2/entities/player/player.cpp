@@ -58,7 +58,6 @@ void Player::_input(const Ref<InputEvent> &p_event) {
 }
 
 void Player::_notification(int p_what) {
-	Entity::_notification(p_what);
 	switch (p_what) {
 		case NOTIFICATION_READY:
 			set_camera_path(camera_path);
