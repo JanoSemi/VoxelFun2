@@ -329,7 +329,7 @@ void InputMap::load_default() {
 	mouseb.instance();
 	mouseb->set_button_index(BUTTON_RIGHT);
 	action_add_event("place_block", mouseb);
-	
+
 	add_action("ui_accept");
 	key.instance();
 	key->set_scancode(KEY_ENTER);
