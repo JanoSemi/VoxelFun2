@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   javascript-template:
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-24.04"
     name: Template (target=release, tools=no)
 
     steps:
@@ -33,8 +33,8 @@ jobs:
         run: |
           emcc -v
 
-      - name: Setup Godot build cache
-        uses: ./.github/actions/godot-cache
+      - name: Restore Godot build cache
+        uses: ./.github/actions/godot-cache-restore
         continue-on-error: true
 
       - name: Setup python and scons
@@ -47,6 +47,10 @@ jobs:
           platform: javascript
           target: release
           tools: false
+
+      - name: Save Godot build cache
+        uses: ./.github/actions/godot-cache-save
+        continue-on-error: true
 
       - name: Upload artifact
         uses: ./.github/actions/upload-artifact
