@@ -47,11 +47,9 @@ void Player::_input(const Ref<InputEvent> &p_event) {
 	Ref<VoxelRaycastResult> pointed_voxel = get_pointed_result();
 	if (pointed_voxel.is_valid()) {
 		if (p_event->is_action_pressed("break_block")) {
-			print_line("Breaking block");
 			tool->set_voxel(pointed_voxel->position, 0);
 		}
 		if (p_event->is_action_pressed("place_block")) {
-			print_line("Placing block");
 			tool->set_voxel(pointed_voxel->previous_position, 1);
 		}
 	}
