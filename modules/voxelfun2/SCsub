@@ -2,7 +2,11 @@
 
 Import("env")
 
-source_files = ["*.cpp", "worldgen/*.cpp", "worldgen/biomes/*.cpp", "entities/*.cpp", "entities/player/*.cpp"]
+source_files = [
+    "*.cpp",
+    "entities/*.cpp", "entities/player/*.cpp",
+    "worldgen/*.cpp", "worldgen/biomes/*.cpp",
+]
 
 for f in source_files:
     env.add_source_files(env.modules_sources, f)

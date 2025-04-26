@@ -8,11 +8,11 @@
 #include "worldgen/voxel_generator_voxelfun2.h"
 
 void register_voxelfun2_types() {
-	// Worldgen
-	ClassDB::register_class<VoxelGeneratorVoxelFun2>();
 	// Entites
 	ClassDB::register_virtual_class<Entity>();
 	ClassDB::register_class<Player>();
+	// Worldgen
+	ClassDB::register_class<VoxelGeneratorVoxelFun2>();
 }
 
 void unregister_voxelfun2_types() {
