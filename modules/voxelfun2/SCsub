@@ -5,6 +5,7 @@ Import("env")
 source_files = [
     "*.cpp",
     "entities/*.cpp", "entities/player/*.cpp",
+    "misc/*.cpp",
     "worldgen/*.cpp", "worldgen/biomes/*.cpp",
 ]
 
